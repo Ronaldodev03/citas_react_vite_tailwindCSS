@@ -2,27 +2,13 @@ import { useState, useEffect } from "react";
 import Formulario from "./components/Formulario";
 import Header from "./components/Header";
 import ListadoPacientes from "./components/ListadoPacientes";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 function App() {
   // Estado para los pacientes cargados.
-  const [pacientes, setPacientes] = useState([]);
+  const [pacientes, setPacientes] = useLocalStorage("pacientes", []);
   // Estado que se llenará cuando querramos editar un paciente ya existente (al presionar editar se ejecutará 'setPaciente(paciente-proveniente-del-mapeo-al-cual-se-le-presionó-editar)').
   const [paciente, setPaciente] = useState({});
-
-  // Local Storage (no funciona el local storage, no se por qué, el codigo está bien)
-  useEffect(() => {
-    const obtenerLS = () => {
-      const pacientesLS =
-        JSON.parse(localStorage.getItem("pacientes-app")) ?? [];
-      setPacientes(pacientesLS);
-    };
-    obtenerLS();
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("pacientes-app", JSON.stringify(pacientes));
-  }, [pacientes]);
-
   //Funcion para eliminar paciente cargado.
   const eliminarPaciente = (id) => {
     const pacientesActualizados = pacientes.filter(
